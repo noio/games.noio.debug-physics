@@ -2,6 +2,7 @@ using UnityEngine;
 
 public static class DebugPhysics
 {
+    public static readonly float DefaultDrawDuration = .2f;
     public static float DrawDuration { get; set; } = 0f;
     public static Color ColorHint { get; set; } = new Color(0.74f, 0.8f, 0.94f);
 
@@ -105,9 +106,14 @@ public static class DebugPhysics
         return numFound;
     }
 
-    public static bool SphereCast(Vector3 origin, float radius, Vector3 direction, out RaycastHit hitInfo,
-        float                             maxDistance,
-        LayerMask                         layerMask)
+    public static bool SphereCast(
+        Vector3                 origin,
+        float                   radius,
+        Vector3                 direction,
+        out RaycastHit          hitInfo,
+        float                   maxDistance             = Mathf.Infinity,
+        int                     layerMask               = Physics.DefaultRaycastLayers,
+        QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
     {
         var didHit = Physics.SphereCast(origin, radius, direction, out hitInfo, maxDistance, layerMask);
 #if DEBUG
@@ -129,5 +135,17 @@ public static class DebugPhysics
         }
 #endif
         return didHit;
+    }
+
+    public static bool SphereCast(
+        Ray                     ray,
+        float                   radius,
+        out RaycastHit          hitInfo,
+        float                   maxDistance             = Mathf.Infinity,
+        int                     layerMask               = Physics.DefaultRaycastLayers,
+        QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+    {
+        return SphereCast(ray.origin, radius, ray.direction, out hitInfo, maxDistance, layerMask,
+            queryTriggerInteraction);
     }
 }
