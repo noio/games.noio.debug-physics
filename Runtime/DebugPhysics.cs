@@ -6,11 +6,12 @@ public static class DebugPhysics
     public static Color ColorHint { get; set; } = new Color(0.74f, 0.8f, 0.94f);
 
     public static bool Raycast(
-        Vector3        origin,
-        Vector3        direction,
-        out RaycastHit hitInfo,
-        float          maxDistance,
-        int            layerMask = Physics.DefaultRaycastLayers)
+        Vector3                 origin,
+        Vector3                 direction,
+        out RaycastHit          hitInfo,
+        float                   maxDistance             = Mathf.Infinity,
+        int                     layerMask               = Physics.DefaultRaycastLayers,
+        QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
     {
         var didHit = Physics.Raycast(origin, direction, out hitInfo, maxDistance, layerMask);
 #if DEBUG
@@ -30,6 +31,17 @@ public static class DebugPhysics
         }
 #endif
         return didHit;
+    }
+
+    public static bool Raycast(
+        Ray                     ray,
+        out RaycastHit          hitInfo,
+        float                   maxDistance             = Mathf.Infinity,
+        int                     layerMask               = Physics.DefaultRaycastLayers,
+        QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+    {
+        return Raycast(ray.origin, ray.direction, out hitInfo, maxDistance, layerMask,
+            queryTriggerInteraction);
     }
 
     public static bool CheckCapsule(
@@ -75,7 +87,8 @@ public static class DebugPhysics
 #endif
     }
 
-    public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results, LayerMask layerMask)
+    public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results,
+        LayerMask                                   layerMask)
     {
 #if !DEBUG
         return Physics.OverlapSphereNonAlloc(position, radius, results, layerMask);
@@ -85,13 +98,15 @@ public static class DebugPhysics
         for (int i = 0; i < numFound; i++)
         {
             var collider = results[i];
-            DebugDraw.WireCube(collider.bounds.center, collider.bounds.size, Quaternion.identity, Color.green, DrawDuration);
+            DebugDraw.WireCube(collider.bounds.center, collider.bounds.size, Quaternion.identity, Color.green,
+                DrawDuration);
         }
 
         return numFound;
     }
 
-    public static bool SphereCast(Vector3 origin, float radius, Vector3 direction, out RaycastHit hitInfo, float maxDistance,
+    public static bool SphereCast(Vector3 origin, float radius, Vector3 direction, out RaycastHit hitInfo,
+        float                             maxDistance,
         LayerMask                         layerMask)
     {
         var didHit = Physics.SphereCast(origin, radius, direction, out hitInfo, maxDistance, layerMask);
@@ -104,11 +119,13 @@ public static class DebugPhysics
             DebugDraw.WireDisc(hitPoint, hitInfo.normal, .1f, Color.red, DrawDuration);
             var color2 = new Color(1, 1, 1, .5f);
             Debug.DrawLine(hitPoint, origin + direction.normalized * maxDistance, color2, DrawDuration);
-            DebugDraw.WireCapsule(origin, origin + direction * (hitInfo.distance), radius, Color.red, DrawDuration);
+            DebugDraw.WireCapsule(origin, origin + direction * (hitInfo.distance), radius, Color.red,
+                DrawDuration);
         }
         else
         {
-            DebugDraw.WireCapsule(origin, origin + direction * (maxDistance), radius, Color.green, DrawDuration);
+            DebugDraw.WireCapsule(origin, origin + direction * (maxDistance), radius, Color.green,
+                DrawDuration);
         }
 #endif
         return didHit;
