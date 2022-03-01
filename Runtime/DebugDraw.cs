@@ -118,6 +118,16 @@ public static class DebugDraw
         }
     }
 
+    /// <summary>
+    /// Draws a wire arc
+    /// </summary>
+    /// <param name="center">The center of the arc</param>
+    /// <param name="normal">Normal direction, perpendicular to the disc</param>
+    /// <param name="from">Vector that points in the direction of one end of the arc. Must be normalized</param>
+    /// <param name="angle">Total angle width of the arc</param>
+    /// <param name="radius">Radius of the arc</param>
+    /// <param name="color"></param>
+    /// <param name="duration"></param>
     public static void WireArc(
         Vector3 center,
         Vector3 normal,
@@ -125,19 +135,28 @@ public static class DebugDraw
         float   angle,
         float   radius,
         Color   color,
-        float   duration = 0)
+        float   duration = 0,
+        bool drawCaps = false)
     {
         from *= radius;
         var prev = center + from;
         var steps = Mathf.CeilToInt(angle / 20);
         var anglePerStep = angle / steps;
         var rotation = Quaternion.AngleAxis(anglePerStep, normal);
+        if (drawCaps)
+        {
+            Debug.DrawLine(center, prev, color, duration);
+        }
         for (var i = 0; i < steps; i++)
         {
             from = rotation * from;
             var point = center + from;
             Debug.DrawLine(prev, point, color, duration);
             prev = point;
+        }
+        if (drawCaps)
+        {
+            Debug.DrawLine(center, prev, color, duration);
         }
     }
 
