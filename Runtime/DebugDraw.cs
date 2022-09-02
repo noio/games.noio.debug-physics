@@ -160,6 +160,23 @@ public static class DebugDraw
         }
     }
 
+    public static void WireDisc(
+        Vector3 center,
+        Vector3 normal,
+        float   radius,
+        Color   color,
+        float   duration = 0)
+    {
+        var from = Vector3.Cross(normal, Vector3.up);
+        if (from.sqrMagnitude < 1f / 1000)
+        {
+            from = Vector3.Cross(normal, Vector3.right);
+        }
+
+        from.Normalize();
+        WireArc(center, normal, from, 360, radius, color, duration);
+    }
+
     public static void Arrow(Vector3 start, Vector3 end, Vector3 up, Color color, float duration = 0)
     {
         var dir = end - start;
@@ -180,21 +197,31 @@ public static class DebugDraw
     {
         Arrow(start, start + dir, up, color, duration);
     }
-
-    public static void WireDisc(
-        Vector3 center,
-        Vector3 normal,
-        float   radius,
-        Color   color,
-        float   duration = 0)
-    {
-        var from = Vector3.Cross(normal, Vector3.up);
-        if (from.sqrMagnitude < 1f / 1000)
-        {
-            from = Vector3.Cross(normal, Vector3.right);
-        }
-
-        from.Normalize();
-        WireArc(center, normal, from, 360, radius, color, duration);
-    }
+    //
+    // /// <summary>
+    // /// Draws a grid on the XZ plane (with normal in the Y dir)
+    // /// </summary>
+    // /// <param name="pos"></param>
+    // /// <param name="rotation"></param>
+    // /// <param name="size"></param>
+    // /// <param name="subdivisions"></param>
+    // /// <param name="color"></param>
+    // /// <param name="duration"></param>
+    // /// <returns></returns>
+    // public static void Grid(
+    //     Vector3 pos,
+    //     Quaternion rotation,
+    //     Vector2 size,
+    //     Vector2Int subdivisions,
+    //     Color color,
+    //     float duration = 0)
+    // {
+    //     var start = pos - rotation * size * .5f;
+    //     var xIncr = rotation * Vector3.right * size.x / subdivisions.x;
+    //     var yIncr = rotation * Vector3.forward * size.y / subdivisions.y;
+    //     for (int i = 0; i <= subdivisions.x; i++)
+    //     {
+    //         Debug.DrawLine()
+    //     }
+    // }
 }

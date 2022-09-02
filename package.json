@@ -15,5 +15,9 @@
         "name": "Thomas van den Berg",
         "email": "thomas@noio.nl",
         "url": "https://noio.games"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/noio/games.noio.debug-physics.git"
     }
 }
