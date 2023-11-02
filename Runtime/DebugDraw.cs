@@ -9,7 +9,7 @@ public static class DebugDraw
         Debug.DrawRay(position, rotation * Vector3.forward, Color.blue, duration, false);
     }
 
-    public static void WireCube(Vector3 center, Vector3 size, Quaternion rotation, Color color,
+    public static void WireCube(Vector3 center, Vector3 extents, Quaternion rotation, Color color,
         float                           duration = 0.1f)
     {
         /*
@@ -26,14 +26,14 @@ public static class DebugDraw
 
         var points = new[]
         {
-            new Vector3(-size.x, +size.y, -size.z), // Front top left
-            new Vector3(+size.x, +size.y, -size.z), // Front top right
-            new Vector3(-size.x, -size.y, -size.z), // Front bottom left
-            new Vector3(+size.x, -size.y, -size.z), // Front bottom right
-            new Vector3(-size.x, +size.y, +size.z), // Back top left
-            new Vector3(+size.x, +size.y, +size.z), // Back top right
-            new Vector3(-size.x, -size.y, +size.z), // Back bottom left
-            new Vector3(+size.x, -size.y, +size.z)  // Back bottom right
+            new Vector3(-extents.x, +extents.y, -extents.z), // Front top left
+            new Vector3(+extents.x, +extents.y, -extents.z), // Front top right
+            new Vector3(-extents.x, -extents.y, -extents.z), // Front bottom left
+            new Vector3(+extents.x, -extents.y, -extents.z), // Front bottom right
+            new Vector3(-extents.x, +extents.y, +extents.z), // Back top left
+            new Vector3(+extents.x, +extents.y, +extents.z), // Back top right
+            new Vector3(-extents.x, -extents.y, +extents.z), // Back bottom left
+            new Vector3(+extents.x, -extents.y, +extents.z)  // Back bottom right
         };
 
         for (var i = 0; i < points.Length; i++)
@@ -177,6 +177,14 @@ public static class DebugDraw
         WireArc(center, normal, from, 360, radius, color, duration);
     }
 
+    /// <summary>
+    /// Draws an arrow from start to end
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="up"></param>
+    /// <param name="color"></param>
+    /// <param name="duration"></param>
     public static void Arrow(Vector3 start, Vector3 end, Vector3 up, Color color, float duration = 0)
     {
         var dir = end - start;
@@ -193,6 +201,14 @@ public static class DebugDraw
         }
     }
 
+    /// <summary>
+    /// Draw the arrow from a vector with start and direction
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="dir"></param>
+    /// <param name="up"></param>
+    /// <param name="color"></param>
+    /// <param name="duration"></param>
     public static void ArrowV(Vector3 start, Vector3 dir, Vector3 up, Color color, float duration = 0)
     {
         Arrow(start, start + dir, up, color, duration);
