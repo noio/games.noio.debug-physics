@@ -88,6 +88,27 @@ public static class DebugPhysics
 #endif
     }
 
+    public static bool CheckBox(
+        Vector3    center,
+        Vector3    extents,
+        Quaternion rotation,
+        LayerMask  layerMask,
+        Color?     color = null)
+    {
+#if !DEBUG
+        return Physics.CheckBox(position, size, rotation, layerMask);
+#else
+        if (color == null)
+        {
+            color = Color.green;
+        }
+
+        var overlap = Physics.CheckBox(center, extents, rotation, layerMask);
+        DebugDraw.WireCube(center, extents, rotation, overlap ? Color.red : color.Value, DrawDuration);
+        return overlap;
+#endif
+    }
+
     public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results,
         LayerMask                                   layerMask)
     {
