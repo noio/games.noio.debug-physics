@@ -1,6 +1,6 @@
 {
     "name": "games.noio.debug-physics",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "displayName": "Debug Physics",
     "description": "Draw raycasts on the game view (with Debug.DrawLine) for easy debugging",
     "unity": "2019.1",

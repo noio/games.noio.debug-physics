@@ -96,7 +96,7 @@ public static class DebugPhysics
         Color?     color = null)
     {
 #if !DEBUG
-        return Physics.CheckBox(position, size, rotation, layerMask);
+        return Physics.CheckBox(center, extents, rotation, layerMask);
 #else
         if (color == null)
         {
