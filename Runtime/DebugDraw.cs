@@ -202,6 +202,37 @@ public static class DebugDraw
     }
 
     /// <summary>
+    /// Draws an arrow from start to end with 4 vanes in a cross pattern
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="color"></param>
+    /// <param name="duration"></param>
+    public static void Arrow(Vector3 start, Vector3 end, Color color, float duration = 0)
+    {
+        var dir = end - start;
+        var length = dir.magnitude;
+        if (length > 0.001f)
+        {
+            Debug.DrawLine(start, end, color, duration);
+            dir /= length;
+            var up = Vector3.Cross(dir, Vector3.up);
+            if (up.sqrMagnitude < 1f / 1000)
+            {
+                up = Vector3.Cross(dir, Vector3.right);
+            }
+            up.Normalize();
+            var right = Vector3.Cross(dir, up).normalized;
+
+            var arrowSize = length * .25f;
+            Debug.DrawLine(end, end - (dir - up) * arrowSize, color, duration);
+            Debug.DrawLine(end, end - (dir + up) * arrowSize, color, duration);
+            Debug.DrawLine(end, end - (dir - right) * arrowSize, color, duration);
+            Debug.DrawLine(end, end - (dir + right) * arrowSize, color, duration);
+        }
+    }
+
+    /// <summary>
     /// Draw the arrow from a vector with start and direction
     /// </summary>
     /// <param name="start"></param>
@@ -212,6 +243,18 @@ public static class DebugDraw
     public static void ArrowV(Vector3 start, Vector3 dir, Vector3 up, Color color, float duration = 0)
     {
         Arrow(start, start + dir, up, color, duration);
+    }
+
+    /// <summary>
+    /// Draw the arrow from a vector with start and direction with 4 vanes in a cross pattern
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="dir"></param>
+    /// <param name="color"></param>
+    /// <param name="duration"></param>
+    public static void ArrowV(Vector3 start, Vector3 dir, Color color, float duration = 0)
+    {
+        Arrow(start, start + dir, color, duration);
     }
     //
     // /// <summary>
